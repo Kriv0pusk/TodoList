@@ -1,27 +1,26 @@
 import React from 'react'
 import './TodoList.css'
 
-export default class TodoList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const TodoList = props => {
+  return (
+    <ul className="todo-list">
+      {props.state.todos.map((todo, index) =>
+        <li className="todo-item" key={todo.uid}>
+          <label>
+            <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={props.onComplete.bind(this, todo.uid, index)}/>
+            <span>{todo.title}</span>
+          </label>
+          <i
+              className="material-icons red-text"
+              onClick={props.onDelete.bind(this, todo.uid, index)}
+          >delete</i>
+        </li>
+      )}
+    </ul>
+  )
+};
 
-  render() {
-    return (
-      <ul className="todo-list">
-        {this.props.state.todos.map((todo) =>
-          <li
-              className="todo-item"
-              key={todo.uid}
-          >
-            <label>
-              <input type="checkbox" />
-              <span>{todo.title}</span>
-            </label>
-            <i className="material-icons red-text">delete</i>
-          </li>
-        )}
-      </ul>
-    )
-  }
-}
+export default TodoList

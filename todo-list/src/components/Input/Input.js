@@ -1,35 +1,28 @@
 import React from 'react'
 
 export default class Input extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  async handleSubmit(ev) {
+  handleSubmit(ev) {
     ev.preventDefault();
-    const todo = {
-      title: this.input.value,
-      completed: false
-    };
-    try {
-      await fetch(this.props.url, {
-        method: 'POST',
-        body: JSON.stringify(todo)
-      });
-      this.props.getTodos();
-    } catch (e) {
-      throw new Error(e);
-    }
-    this.input.value = '';
+    this.props.onSubmit(this.title, this.order);
+    this.title.value = '';
+    this.order.value = '';
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="input-field">
-          <input type="text" ref={input => {this.input = input}}/>
-          <label>Todo title</label>
+      <form onSubmit={this.handleSubmit.bind(this)}>
+        <div className="row valign-wrapper">
+          <div className="input-field col s6">
+            <input type="text" ref={inputTitle => this.title = inputTitle}/>
+            <label>Todo title</label>
+          </div>
+          <div className="input-field col s3">
+            <input type="text" ref={inputOrder => this.order = inputOrder}/>
+            <label>Todo order</label>
+          </div>
+          <button className="btn waves-effect waves-light col s2 offset-s1" type="submit" name="action">Add Todo
+            <i className="material-icons right">send</i>
+          </button>
         </div>
       </form>
     )
