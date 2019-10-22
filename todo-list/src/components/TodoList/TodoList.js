@@ -1,26 +1,34 @@
-import React from 'react'
-import './TodoList.css'
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { completeTodo, deleteTodo } from "./../../store/actions/todos";
+import "./TodoList.css";
 
-const TodoList = props => {
+const TodoList = () => {
+  const todos = useSelector(state => state.todoReducer.todos);
+  const dispatch = useDispatch();
+
   return (
     <ul className="todo-list">
-      {props.state.todos.map((todo, index) =>
+      {todos.map((todo, index) => (
         <li className="todo-item" key={todo.uid}>
           <label>
             <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={props.onComplete.bind(this, todo.uid, index)}/>
+              type="checkbox"
+              checked={todo.completed}
+              onChange={dispatch(completeTodo(todo.uid, todos, index))}
+            />
             <span>{todo.title}</span>
           </label>
           <i
-              className="material-icons red-text"
-              onClick={props.onDelete.bind(this, todo.uid, index)}
-          >delete</i>
+            className="material-icons red-text"
+            onClick={dispatch(deleteTodo(todo.uid, todos, index))}
+          >
+            delete
+          </i>
         </li>
-      )}
+      ))}
     </ul>
-  )
+  );
 };
 
-export default TodoList
+export default TodoList;
